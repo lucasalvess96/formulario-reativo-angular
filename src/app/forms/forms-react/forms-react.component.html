@@ -1,0 +1,127 @@
+<form class="example-form" [formGroup]="formCadastro" (ngSubmit)="registerUser()">
+    <h2>CADASTRAR</h2>
+
+    <table class="example-full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="name"
+                        minlength="3"
+                        maxLength="70"
+                        formControlName="name"
+                        (keypress)="specialChar($event)"
+                        required
+                        autocomplete="off"
+                    />
+                </mat-form-field>
+            </td>
+
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>CPF</mat-label>
+                    <input 
+                        matInput
+                        placeholder="EX: 00000000000" 
+                        formControlName="cpf"
+                        required
+                        autocomplete="off"
+                        mask="000.000.000-00" [dropSpecialCharacters]="true"
+                    >
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+  
+    <p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Endereço</mat-label>
+        <textarea matInput placeholder="Ex. rua palmas" formControlName="address" required></textarea>
+      </mat-form-field>
+    </p>
+  
+    <table class="example-full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="email" autocomplete="off">
+                    <mat-error *ngIf="formCadastro.hasError('email') && !formCadastro.hasError('required')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="formCadastro.hasError('required')">
+                        Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </td>
+
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Telefone</mat-label>
+                    <input 
+                        matInput 
+                        placeholder="91988990011" 
+                        formControlName="contact"
+                        required
+                        autocomplete="off"
+                        prefix="+55" mask="(00) 00000-0000" [showMaskTyped]="true" [dropSpecialCharacters]="true" 
+                    >
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+
+    <table class="example-full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Senha</mat-label>
+                    <input 
+                        matInput 
+                        class="password"
+                        type="password" 
+                        minlength="6" 
+                        maxlength="24" 
+                        formControlName="password"
+                        required
+                    >
+                </mat-form-field>
+            </td>
+
+            <td>
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Confirmar senha</mat-label>
+                    <input 
+                        matInput
+                        class="checkPasswords"
+                        type="password" 
+                        minlength="6" 
+                        maxlength="24" 
+                        formControlName="confPassword"
+                        required
+                    >
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+
+    <div *ngIf="passwordHandle.invalid && (passwordHandle.dirty || passwordHandle.touched)" style="color: red">
+        <div *ngIf="passwordHandle.errors?.['required']">informe sua senha.</div>
+        <div *ngIf="passwordHandle.errors?.['minlength']"> a senha deve conter no minímo 6 caracteres</div>
+    </div>
+
+    <div class="invalid-feedback" style="color: red" 
+        *ngIf="formCadastro.errors?.['mismatch'] && (formCadastro.controls['confPassword'].dirty || formCadastro.controls['confPassword'].touched)"
+    >
+        as senhas não conferem
+    </div>
+
+    <button type="submit" [disabled]="formCadastro.invalid" title="enviar">enviar</button>
+    <button (click)="resetForm()">reset</button>
+</form>
+  
